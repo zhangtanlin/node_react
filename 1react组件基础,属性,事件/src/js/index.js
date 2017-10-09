@@ -16,9 +16,10 @@ class Index extends React.Component{
       //调用头部组件
       //注意：这个return()里面只能够有一个节点，要返回多个节点需要把多个节点包含内
       <div>
-         <ComponentHeader/>
-         <BodyIndex/>
-         <ComponentFooter/>
+        <ComponentHeader/>
+        {/*利用props给子模块传参。注意：模块中传参使用大括号可以，测试使用字符串也可以*/}
+        <BodyIndex userid={123456789} username={"打野老夫子"}/>
+        <ComponentFooter/>
       </div>
     );
   }
