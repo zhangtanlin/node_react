@@ -1,3 +1,7 @@
-/*注意：css修改之后webpack识别不到，所以需要手动刷新浏览器*/
+
+/*注意：css修改之后webpack识别不到，所以需要手动刷新浏览器
+  ui框架：http://www.material-ui.com/
+  ui框架：https://ant.design/index-cn
+*/
 header{}
 header.small h1{font-size: 12px;}

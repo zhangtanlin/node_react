@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+//
+import 'antd/dist/antd.css';
+
 export default class ComponentHeader extends React.Component{
 
   //初始化header的状态【未被点击时】
@@ -28,6 +31,7 @@ export default class ComponentHeader extends React.Component{
     * 注意4：使用下面的行间的样式，需要在节点上绑定style：
     * <header style={styleComponentHeader.header}></header>
     * 注意5：这个样式里面可以写三元运算符【但是是要用小括号包起来，不是用大括号】
+    * 注意6：JSX样式和css的相互转换可以采用css to react那个工具手动转换代码，把css转成json
     * */
     const styleComponentHeader = {
       header:{
@@ -39,7 +43,7 @@ export default class ComponentHeader extends React.Component{
     }
 
     return (
-      <header style={styleComponentHeader.header} className="small" onClick={this.switchHeaderToggle.bind(this)}>
+      <header style={styleComponentHeader.header} class="small" onClick={this.switchHeaderToggle.bind(this)}>
         <h1>这里是头部</h1>
       </header>
     )
