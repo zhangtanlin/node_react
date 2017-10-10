@@ -1,0 +1,13 @@
+/*
+注意1：css修改之后webpack识别不到，所以需要手动刷新浏览器
+注意2：模块化css相当于把当前css引入到当前模块的头部【内嵌】
+*/
+.miniFooter{
+  background: #333;
+  color: #fff;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.miniFooter h6{
+  text-align: center;
+}
