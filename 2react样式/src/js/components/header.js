@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-//
-import 'antd/dist/antd.css';
+//在头部引入antd的input样式
+import {Input} from "antd";
 
 export default class ComponentHeader extends React.Component{
 
@@ -22,7 +22,6 @@ export default class ComponentHeader extends React.Component{
   };
 
   render(){
-
     /*
     * 定义header的样式。
     * 注意1：样式要写在render里面，return之前
@@ -45,6 +44,8 @@ export default class ComponentHeader extends React.Component{
     return (
       <header style={styleComponentHeader.header} class="small" onClick={this.switchHeaderToggle.bind(this)}>
         <h1>这里是头部</h1>
+        <br/>
+        <Input placeholder="antd样式的input文本框"/>
       </header>
     )
   };

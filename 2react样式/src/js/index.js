@@ -7,6 +7,9 @@ import BodyIndex from "./components/bodyindex";
 //引入底部的类
 import ComponentFooter from "./components/footer";
 
+//antd样式引入
+import "antd/dist/antd.css";
+
 //创建首页类
 class Index extends React.Component{
   //Index类的实现
