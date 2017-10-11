@@ -4,14 +4,6 @@
 * 在引入mixins之前应该还要引入react-mixin插件
 * */
 const MixinLog = {
-  //注意：mixin里面有生命周期
-  componentWillMount(){
-    console.log("mixin测试是否有生命周期 - componentWillMount")
-  },
-  componentDidMount(){
-    console.log("mixin测试是否有生命周期 - componentDidMount")
-  },
-  //主要是里面的JSON方法
   log(){
     console.log("我是一个mixin的log方法");
   }

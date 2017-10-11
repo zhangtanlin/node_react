@@ -12,7 +12,7 @@ var path = require("path");
 module.exports = {
   //context：设置配置文件位置；__dirname：获取当前文件所在目录的完整目录名
   context: path.join(__dirname),
-  entry: "./src/js/index.js",
+  entry: "./src/js/root.js",
   module: {
     loaders: [{
       test: /\.js?$/,
