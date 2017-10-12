@@ -1,0 +1,12 @@
+/*头部*/
+.header{
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #2fdbce;
+}
+.header img{
+  height: 50px;
+}
+.header span{
+  font-size: 30px;
+}

@@ -18,7 +18,7 @@ export default class Root extends React.Component{
       <div>
         {/*屏幕做小宽度1225px时，调用*/}
         <MediaQuery query="(min-device-width:1225px)">
-          <PCIndex></PCIndex>
+          <PCIndex/>
         </MediaQuery>
         {/*屏幕最大宽度1224px时，调用*/}
         <MediaQuery query="(max-device-width:1224px)">
