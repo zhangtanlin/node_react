@@ -1,18 +1,8 @@
 import React from "react";
 import {Link} from "react-router"
 
-//引入antd的：栅格布局、导航、图标、表单、文本框、按钮、模态框、标签页
-import {
-  Row,
-  Col ,
-  Menu,
-  Icon,
-  Form,
-  Input,
-  Button,
-  Modal,
-  Tabs
-} from 'antd';
+//引入antd的：栅格布局、导航、图标、表单、文本框、按钮、模态框、标签页、提示纤细【小写】
+import {Row, Col , Menu, Icon, Form, Input, Button, Modal, Tabs,message} from 'antd';
 
 //使用Form模块时定义
 const FormItem = Form.Item;
@@ -56,36 +46,65 @@ class PCHeader extends React.Component{
       this.setState({current:e.key});
     }
   }
+  //登录注册模态框的切换
+  callback(key){
+    if(key == 1){
+      this.setState({action:false});
+    }else if(key == 2){
+      this.setState({action:true});
+    }
+  }
 
   //登录注册模态框注册页面提交时
   handleSubmit(e){
     //阻止事件冒泡
     e.preventDefault();
     //定义插件fetch参数
-    var myFetchOption = {
+    var myFetchOptions = {
       method:"GET"
     }
     //获取Form的值
     var formData = this.props.form.getFieldsValue();
     console.log(formData);
-    //调用fetch的方法：fetch("url",options).then(response=>response.json())
-    // fetch("url",options)
-    //   .then(response=>response.json())
+    /*
+    url:http://newsapi.gugujiankong.com/Handler.ashx?action=register&username=userName&password=password&r_userName=r_userName&r_password=r_password&r_confirmPassword=r_confirmPassword
+    调用fetch的方法：fetch("url",options).then(response=>response.json())
+    更改action的值判定是登陆还是注册
+    */
+    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action="+this.state.action+"&username="+formData.userName+"&password="+formData.password+"&r_userName="+formData.r_userName+"&r_password="+formData.r_password+"&r_confirmPassword="+formData.r_confirmPassword,myFetchOptions)
+      .then(response => response.json())
+      .then(json => {
+        //验证成功后修改state的值
+        this.setState({
+          userNickName:json.NickUserName,
+          userid:json.Userid
+        })
+      });
+    //判定是登录提交还是注册提交
+    if(this.state.action == "login"){
+      this.setState({"hasLogined":true});
+    }
+    // else if(this.state.action == true){
+    //   this.setState({"hasLogined":true});
+    // }
+
+    //请求成功后显示一条message信息。注意小写
+    message.success("请求成功");
+    //请求成功后，隐藏模态框
+    this.setModalVisible(false);
   }
 
   render(){
-    //Form方法定义对象接受Form参数
-    let {getFieldProps} = this.props.form;
+    //Form方法定义对象接受Form参数。注意getFieldDecorator的用法
+    let {getFieldDecorator} = this.props.form;
     //根据用户登录状态，显示不同的样式【注意这是个三元运算】
     const userShow = this.state.hasLogined
     ?
       <Menu.Item key="logout" class="register">
         <Button type="primary" htmlType="button">{this.state.userNickName}</Button>
-        &nbsp;&nbsp;
         <Link target="_blank">
           <Button type="dashed" htmlType="button">个人中心</Button>
         </Link>
-        &nbsp;&nbsp;
         <Button type="ghost" htmlType="button">退出</Button>
       </Menu.Item>
     :
@@ -142,24 +161,49 @@ class PCHeader extends React.Component{
                okText：显示按钮文字
             */}
             <Modal title="用户中心" wrapClassName="vertical-center-modal" visible={this.state.modalVisible} onOk={() => this.setModalVisible(false)} onCancel={()=>this.setModalVisible(false)} okText="关闭">
-              <Tabs type="card">
+              {/*利用Tab进行切换*/}
+              <Tabs type="card" onChange={this.callback.bind(this)}>
+                <TabPane tab="登录" key="1">
+                  <Form onSubmit={this.handleSubmit.bind(this)}>
+                    <FormItem label="账户">
+                      {/*getFieldProps是把输入的文本绑定到r_userName上*/}
+                      {getFieldDecorator("userName")(
+                        <Input type="text" placeholder="请输入您的账号"/>
+                      )}
+                    </FormItem>
+                    <FormItem label="密码">
+                      {/*getFieldProps是把输入的文本绑定到r_userName上*/}
+                      {getFieldDecorator("password")(
+                        <Input type="password" placeholder="请输入您的密码"/>
+                      )}
+                    </FormItem>
+                    <Button type="primary" htmlType="submit">登录</Button>
+                  </Form>
+                </TabPane>
                 <TabPane tab="注册" key="2">
                   <Form onSubmit={this.handleSubmit.bind(this)}>
                     <FormItem label="账户">
                       {/*getFieldProps是把输入的文本绑定到r_userName上*/}
-                      <Input placeholder="请输入您的账号" {...getFieldProps("r_userName")}/>
+                      {getFieldDecorator("r_userName")(
+                        <Input type="text" placeholder="请输入注册账号"/>
+                      )}
                     </FormItem>
                     <FormItem label="密码">
                       {/*getFieldProps是把输入的文本绑定到r_userName上*/}
-                      <Input type="password" placeholder="请输入您的密码" {...getFieldProps("r_password")}/>
+                      {getFieldDecorator("r_password")(
+                        <Input type="password" placeholder="请输入注册密码"/>
+                      )}
                     </FormItem>
                     <FormItem label="确认密码">
                       {/*getFieldProps是把输入的文本绑定到r_userName上*/}
-                      <Input type="password" placeholder="请再次输入您的密码" {...getFieldProps("r_confirmePassword")}/>
+                      {getFieldDecorator("r_confirmPassword")(
+                        <Input type="password" placeholder="请再次输入注册密码"/>
+                      )}
                     </FormItem>
                     <Button type="primary" htmlType="submit">注册</Button>
                   </Form>
                 </TabPane>
+
               </Tabs>
             </Modal>
           </Col>
