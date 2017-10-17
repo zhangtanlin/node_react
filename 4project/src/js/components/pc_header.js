@@ -1,9 +1,13 @@
 import React from "react";
-import {Link} from "react-router"
+import {Link} from "react-router";
 
 //引入antd的：栅格布局、导航、图标、表单、文本框、按钮、模态框、标签页、提示纤细【小写】
 import {Row, Col , Menu, Icon, Form, Input, Button, Modal, Tabs,message} from 'antd';
 
+//导航子菜单方法
+const SubMenu = Menu.SubMenu;
+//菜单类
+const MenuItemGroup = Menu.ItemGroup;
 //使用Form模块时定义
 const FormItem = Form.Item;
 //使用选项卡定义TabPane
@@ -30,6 +34,20 @@ class PCHeader extends React.Component{
       userid:0
     }
   }
+
+  /*由于页面f5刷新后，页面就会被重置，所以需要利用
+  * react的生命周期的页面加载之前判定html5的缓存数据,并把缓存数据赋给相应的值*/
+  componentWillMount(){
+    //判定loaclStorage的缓存数据
+    if(localStorage.userid != ""){
+      this.setState({hasLogined:true});
+      this.setState({
+        userNickName:localStorage.userNickName,
+        userid:localStorage.userid
+      })
+    }
+  }
+
 
   //模态框的关闭按钮事件
   setModalVisible(value){
@@ -65,7 +83,6 @@ class PCHeader extends React.Component{
     }
     //获取Form的值
     var formData = this.props.form.getFieldsValue();
-    console.log(formData);
     /*
     url:http://newsapi.gugujiankong.com/Handler.ashx?action=register&username=userName&password=password&r_userName=r_userName&r_password=r_password&r_confirmPassword=r_confirmPassword
     调用fetch的方法：fetch("url",options).then(response=>response.json())
@@ -77,21 +94,40 @@ class PCHeader extends React.Component{
         //验证成功后修改state的值
         this.setState({
           userNickName:json.NickUserName,
-          userid:json.Userid
+          userid:json.UserId//注意是大写
         })
+        //登录注册成功后需要利用html5缓存相关数据【为后续登出清除缓存使用】
+        localStorage.userid = json.UserId;
+        localStorage.userNickName = json.NickUserName;
+
       });
-    //判定是登录提交还是注册提交
+    //判定是登录成功,修改setState状态值为已登录
     if(this.state.action == "login"){
       this.setState({"hasLogined":true});
     }
-    // else if(this.state.action == true){
-    //   this.setState({"hasLogined":true});
-    // }
 
     //请求成功后显示一条message信息。注意小写
     message.success("请求成功");
     //请求成功后，隐藏模态框
     this.setModalVisible(false);
+  }
+
+  //通过setState来改变提交地址的action
+  callback(key){
+    if(key == 1){
+      this.setState({action:'login'});
+    } else if(key == 2){
+      this.setState({action:'register'});
+    }
+  }
+
+  //退出登录事件
+  logout(){
+    //退出登录清除数据缓存
+    localStorage.userid = "";
+    localStorage.userNickName = "";
+    //利用react的state的设置修改虚拟dom从而达到改变dom的目的
+    this.setState({hasLogined:false});
   }
 
   render(){
@@ -105,7 +141,8 @@ class PCHeader extends React.Component{
         <Link target="_blank">
           <Button type="dashed" htmlType="button">个人中心</Button>
         </Link>
-        <Button type="ghost" htmlType="button">退出</Button>
+        {/*在退出按钮上绑定退出登录事件*/}
+        <Button type="ghost" htmlType="button" onClick={this.logout.bind(this)}>退出</Button>
       </Menu.Item>
     :
       <Menu.Item key="register" class="register">

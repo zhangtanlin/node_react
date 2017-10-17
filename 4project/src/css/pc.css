@@ -10,7 +10,12 @@
   font-size: 16px;
 }
 
+.register{
+  float: right !important;
+}
+.register>a{display: inline-block !important;margin: auto 5px;}
 /*公共尾部*/
 .footer{
   text-align: center;
 }
+
