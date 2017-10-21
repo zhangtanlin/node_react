@@ -4,11 +4,15 @@ import React from "react";
 import PCHeader from "./pc_header";
 import PCFooter from  "./pc_footer";
 
+//导入新闻轮播图模块
+import PCnewsContainer from "./pc_news_container";
+
 export default class PCIndex extends React.Component{
   render(){
     return(
       <div>
         <PCHeader/>
+        <PCnewsContainer></PCnewsContainer>
         <PCFooter></PCFooter>
       </div>
     );
