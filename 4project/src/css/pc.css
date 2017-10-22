@@ -20,5 +20,24 @@
 }
 
 /*新闻轮播图*/
-.leftContainer{width:400px;float: left;}
+.leftContainer{width:400px;float: left;margin-top: 20px;}
+
+/*新闻列表*/
+.tabs_news{
+  margin-top: 20px;
+}
+.tabs_news a{
+  display: block;
+  height: 30px;
+  line-height: 30px;
+}
+
+/*新闻图片列表*/
+.imageblock{
+  float: left;
+  padding-right: 4px;
+}
+.coutom-image{
+  float: left;
+}
 
