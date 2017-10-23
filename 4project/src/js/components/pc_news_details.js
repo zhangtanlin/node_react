@@ -26,7 +26,6 @@ export default class PCNewsDetails extends React.Component {
 
   //定义获取html代码的方法
   createArticle(){
-    console.log(this.state.newsItem);
     return {__html:this.state.newsItem.pagecontent};
   }
 
