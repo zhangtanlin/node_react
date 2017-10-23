@@ -14,7 +14,6 @@ import PCFooter from  "./pc_footer";
 //导入新闻图片模块
 import PCNewsImageBlock from "./pc_news_image_block";
 
-
 export default class PCNewsDetails extends React.Component {
 
   //获取一条数据信息
@@ -27,6 +26,7 @@ export default class PCNewsDetails extends React.Component {
 
   //定义获取html代码的方法
   createArticle(){
+    console.log(this.state.newsItem);
     return {__html:this.state.newsItem.pagecontent};
   }
 
