@@ -40,6 +40,10 @@ export default class PCNewsBlock extends React.Component{
       //es6的循环数据的函数方法
       news.map((newsItem,index) => (
         <li key={index}>
+          {/*
+          注意在字符串内添加变量需要使用 ${} 前面添加 $ 符号
+          这个是ES6语法 字符串模板, 使用 `${变量}`的方法来代替 +号的字符串拼接
+          */}
           <Link to={`details/${newsItem.uniquekey}`} target="_black">
             {newsItem.title}
           </Link>
