@@ -12,7 +12,7 @@ import PCNewsImageBlock from "./pc_news_image_block";
 export default class PCNewsContainer extends React.Component{
   render(){
 
-    {/*定义settings设置*/}
+    {/*定义轮播settings设置*/}
     const settings = {
       dots:true,
       infinine:true,
