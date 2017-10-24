@@ -1,23 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import {
-  Row,
-  Col,
-  Menu,
-  Icon,
-  Tabs,
-  message,
-  From,
-  Input,
-  Button,
-  CheckBox,
-  Modal} from "antd";
-
+//引入栅格布局、表单、文本框、按钮、卡片】
+import {Row, Col, Form, Input, Button,Card} from "antd";
 const FormItem = Form.Item;
-const SubMenu = Menu.SubMenu;
-const TabPane = Tabs.TabPane;
-const MenuItemGroup = Menu.ItemGroup;
 
 import {Router,Route,Link,browserHistory} from "react-router";
 
@@ -27,20 +13,86 @@ class CommonComments extends React.Component{
   constructor(){
     super();
     this.state = {
-      comments:""//评论
+      comments:""//文章评论
     }
   }
 
+  //获取文章评论模块加载前调用接口
+  componentDidMount(){
+    var myFetchOption = {
+      method:"GET"
+    }
+    //地址参数uniquekey应该是：父模块传递过来的动态值
+    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=getcomments&uniquekey="+this.props.uniquekey,myFetchOption)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          comments:json
+        });
+      });
+  }
+
+  //评论提交方法
+  handleSubmit(e){
+    e.preventDefault();//禁止冒泡
+    //评论提交调用
+    var myFetchOptions = {
+      method:"GET"
+    }
+    //获取表单里的数据并序列化【注意大小写】
+    var formData = this.props.form.getFieldsValue();
+    /*
+    请求详情页地址【地址参数应该是：父模块传递过来的动态值】
+    参数userid是从缓存获取
+    参数uniquekey是从外部传进来
+    参数commnet是当前模块输入的评论
+    */
+    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=comment&userid="+localStorage.userid+"&uniquekey="+this.props.uniquekey+"&commnet="+formData.remark,myFetchOptions)
+      .then(response => response.json())
+      .then(json => {
+        //注意：添加了评论后，只需要调用一下，获取文章评论即可【注意写法】
+        this.componentDidMount();
+      });
+  };
+
   render(){
+
+    //定义表单参数【注意写法和下面表单内容的搭配】
+    let { getFieldDecorator } = this.props.form;
+
+    /*获取文章评论并循环加载
+      注意：获取的是state里面的comments的值不是state的值
+    */
+    const {commnets} = this.state.comments;
+    const commnetList = commnets
+      ?
+      commnets.map((comment,index) => (
+        <Card key={index} title={comment.UserName} extra={<a href="#">发表于{comment.datetime}</a>}>
+          <p>{comment.Comments}</p>
+        </Card>
+      ))
+      :
+      "没有加载到任何评论"
+    ;
+
     return(
       <div className="comment">
         <Row>
           <Col span={24}>
+
+            {/*引入获取文章评论模块*/}
+            {commnetList}
+
             <Form onSubmit={this.handleSubmit.bind(this)}>
-              <FormItem label={"您的评论"}>
+              <FormItem label="您的评论">
+
                 {/*注意写法要修改*/}
-                <Input type={"textarea"} placeholder={"随便写"} {...getFieldProps("remark",{initialValue:""})} />
+                {getFieldDecorator("remark")(
+                  <Input type="text" placeholder="随便写"/>
+                )}
+
               </FormItem>
+              <Button type="primary" htmlType="submit">提交评论</Button>
             </Form>
           </Col>
         </Row>
@@ -48,4 +100,7 @@ class CommonComments extends React.Component{
     );
   };
 };
+
+//因为使用了form所以需要二次封装
+export default CommonComments = Form.create({})(CommonComments);
 
