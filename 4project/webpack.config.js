@@ -1,3 +1,7 @@
+/*注意：
+  webpack-dev-server --contentbase src --inline --hot --port 80
+  可以设置不同的端口号
+*/
 var webpack = require("webpack");
 var path = require("path");
 

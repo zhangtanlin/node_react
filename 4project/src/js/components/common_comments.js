@@ -9,7 +9,9 @@ import {Router,Route,Link,browserHistory} from "react-router";
 
 class CommonComments extends React.Component{
 
-  //构造函数
+  /*构造函数
+  注意：所有的代码都包含在constructor里面
+  */
   constructor(){
     super();
     this.state = {
@@ -18,12 +20,14 @@ class CommonComments extends React.Component{
   }
 
   //获取文章评论模块加载前调用接口
-  componentDidMount(){
+  componentWillMount(){
     var myFetchOption = {
       method:"GET"
     }
     //地址参数uniquekey应该是：父模块传递过来的动态值
-    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=getcomments&uniquekey="+this.props.uniquekey,myFetchOption)
+    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=getcomments&uniquekey="+
+      this.props.uniquekey,
+      myFetchOption)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -41,17 +45,22 @@ class CommonComments extends React.Component{
     }
     //获取表单里的数据并序列化【注意大小写】
     var formData = this.props.form.getFieldsValue();
+    console.log(formData);
     /*
     请求详情页地址【地址参数应该是：父模块传递过来的动态值】
     参数userid是从缓存获取
     参数uniquekey是从外部传进来
-    参数commnet是当前模块输入的评论
+    参数commnet是当前模块输入的评论记住是：commnet，下面的一些参数用的是comment
     */
-    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=comment&userid="+localStorage.userid+"&uniquekey="+this.props.uniquekey+"&commnet="+formData.remark,myFetchOptions)
+    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=comment&userid="+
+      localStorage.userid+"&uniquekey="+
+      this.props.uniquekey+"&commnet="+
+      formData.remark,
+      myFetchOptions)
       .then(response => response.json())
       .then(json => {
         //注意：添加了评论后，只需要调用一下，获取文章评论即可【注意写法】
-        this.componentDidMount();
+        this.componentWillMount();
       });
   };
 
@@ -61,12 +70,16 @@ class CommonComments extends React.Component{
     let { getFieldDecorator } = this.props.form;
 
     /*获取文章评论并循环加载
-      注意：获取的是state里面的comments的值不是state的值
+      注意：获取的是state的值,不是this.state.comments
     */
-    const {commnets} = this.state.comments;
-    const commnetList = commnets
+    // console.log(this.state);
+    // console.log(this.state.length);
+    // console.log(this.state.comments);
+    // console.log(this.state.comments.length);
+    const {comments} = this.state;
+    const commentList =  comments.length
       ?
-      commnets.map((comment,index) => (
+      comments.map((comment,index) => (
         <Card key={index} title={comment.UserName} extra={<a href="#">发表于{comment.datetime}</a>}>
           <p>{comment.Comments}</p>
         </Card>
@@ -80,15 +93,19 @@ class CommonComments extends React.Component{
         <Row>
           <Col span={24}>
 
+            <br/>
+            <hr/>
+            <br/>
+
             {/*引入获取文章评论模块*/}
-            {commnetList}
+            {commentList}
 
             <Form onSubmit={this.handleSubmit.bind(this)}>
               <FormItem label="您的评论">
 
                 {/*注意写法要修改*/}
                 {getFieldDecorator("remark")(
-                  <Input type="text" placeholder="随便写"/>
+                  <Input type="textarea" placeholder="随便写"/>
                 )}
 
               </FormItem>
