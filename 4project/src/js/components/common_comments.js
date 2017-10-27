@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-//引入栅格布局、表单、文本框、按钮、卡片】
-import {Row, Col, Form, Input, Button,Card} from "antd";
+//引入栅格布局、表单、文本框、按钮、卡片、全局提示框】
+import {Row, Col, Form, Input, Button,Card,notification } from "antd";
 const FormItem = Form.Item;
 
 import {Router,Route,Link,browserHistory} from "react-router";
@@ -64,6 +64,24 @@ class CommonComments extends React.Component{
       });
   };
 
+  //添加收藏按钮的方法
+  addUserCollection(){
+    var myFetchOptions = {
+      method:"GET"
+    }
+    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=uc&userid="+localStorage.userid+"&uniquekey="+
+      this.props.uniquekey,myFetchOptions)
+      .then(response => response.json())
+      .then(json => {
+
+        //收藏成功后，进行提醒【写法一】
+        // notification.open({message:"ReactNews提醒","description":"收藏成功"});
+        //收藏成功后，进行提醒【写法二】
+        notification["success"]({message:"ReactNews提醒","description":"收藏成功"});
+
+      });
+  }
+
   render(){
 
     //定义表单参数【注意写法和下面表单内容的搭配】
@@ -110,6 +128,10 @@ class CommonComments extends React.Component{
 
               </FormItem>
               <Button type="primary" htmlType="submit">提交评论</Button>
+
+              {/*添加收藏按钮*/}
+              <Button type="primary" htmlType="button" onClick={this.addUserCollection.bind(this)}>收藏</Button>
+
             </Form>
           </Col>
         </Row>
