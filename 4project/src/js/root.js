@@ -8,12 +8,16 @@ import "antd/dist/antd.css";
 import PCIndex from "./components/pc_index";
 //导入PC端的新闻详情模块
 import PCNewsDetails from "./components/pc_news_details";
+//导入PC端个人中心模块
+import PCUserCenter from "./components/pc_user_center";
 
 
 //导入mobile模块
 import MobileIndex from "./components/mobile_index";
 //导入mobile端新闻详情页
 import MobileNewsDetails from "./components/mobile_news_details";
+//导入mobile端个人中心模块
+import MobileUserCenter from "./components/mobile_user_center";
 
 //引入响应式的react布局的包
 import MediaQuery from "react-responsive";
@@ -29,6 +33,10 @@ export default class Root extends React.Component{
           <Router history={hashHistory}>
             <Route path="/" component={PCIndex}></Route>
             <Route path="/details/:uniquekey" component={PCNewsDetails}></Route>
+
+            {/*添加个人中心路由*/}
+            <Route path="/usercenter" component={PCUserCenter}></Route>
+
           </Router>
 
         </MediaQuery>
@@ -39,6 +47,10 @@ export default class Root extends React.Component{
           <Router history={hashHistory}>
             <Route path="/" component={MobileIndex}></Route>
             <Route path="/details/:uniquekey" component={MobileNewsDetails}></Route>
+
+            {/*添加手机端个人中心路由*/}
+            <Route path="/usercenter" component={MobileUserCenter}></Route>
+
           </Router>
 
         </MediaQuery>
