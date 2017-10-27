@@ -138,7 +138,11 @@ class PCHeader extends React.Component{
     ?
       <Menu.Item key="logout" class="register">
         <Button type="primary" htmlType="button">{this.state.userNickName}</Button>
-        <Link target="_blank">
+
+        {/*注意：这里是直接调用的Rout里面的个人中心路由,用上斜点包围。
+        添加target="_blank"表示重新打开一个页面
+           重点：可以直接在Link后面添加to调用Rout里面的路由*/}
+        <Link to={`/usercenter`}>
           <Button type="dashed" htmlType="button">个人中心</Button>
         </Link>
         {/*在退出按钮上绑定退出登录事件*/}
