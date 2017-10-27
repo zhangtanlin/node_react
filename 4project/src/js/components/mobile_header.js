@@ -80,9 +80,10 @@ class MobileHeader extends React.Component{
 
     const userShow = this.state.hasLogined
       ?
-      <spam onClick={this.info.bind(this)}>
+      //登陆成功后，点击按钮跳转到rout里面指定路由
+      <Link to={`/usercenter`}>
         <Icon type="inbox"></Icon>
-      </spam>
+      </Link>
       :
       <Icon type="setting" onClick={this.login.bind(this)}></Icon>
     ;
