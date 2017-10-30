@@ -21,6 +21,20 @@ export default class MobileList extends React.Component{
     }
   };
 
+  //请求
+  componentWillMount(){
+    var myFetchOptions = {
+      method:"GET"
+    };
+    fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=getnews&type="+this.props.type+"&count="+this.state.count,myFetchOptions)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          news: json
+        })
+      });
+  };
+
   /*react-touch-loader的点击方法
     resolve参数是为了关闭等待的那个滚动圈圈
     2e3表示2乘以(10的三次方)等于2000
@@ -37,8 +51,6 @@ export default class MobileList extends React.Component{
       var myFetchOptions = {
         method:"GET"
       }
-      console.log(this.props.type);
-      console.log(this.state.count);
       fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=getnews&type="+this.props.type+"&count="+this.state.count,myFetchOptions)
         .then(response => response.json())
         .then(json => {
@@ -48,10 +60,10 @@ export default class MobileList extends React.Component{
           })
           //判定
           this.state({
-            hasMore:count > 0 && count < 50
+            count:count > 0 && count < 50
           });
-          //结束
-          resove();
+          //页面加载初始化调用一次结束
+          // resove();
         })
     },2e3)
   };
