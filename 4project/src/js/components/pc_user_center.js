@@ -19,9 +19,8 @@ export default class PCUserCenter extends React.Component {
     super();
     //定义上传按钮
     this.state = {
-      previewVisible : false,
-      previewImage:0,
-      fileList :[]
+      previewImage:"",       //设置预览图为空
+      previewVisible : false //默认隐藏模态框
     };
   }
 
@@ -32,37 +31,32 @@ export default class PCUserCenter extends React.Component {
     })
   }
 
-  handlePreview (file){
-    this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
-    });
-  }
-
-  handleChange ({ fileList }){
-    this.setState({ fileList })
-  }
-
   render() {
 
-    //定义默认加载一张图片
     const props = {
-        previewVisible: false,
-        previewImage: '',
-        fileList: [{
-          uid: -1,
-          name: 'xxx.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        }]
+      action:"//oygy32qzs.bkt.clouddn.com/reacttest",
+      headers:{
+        "Access-Control-Allow-Origin":"*"
+      },
+      listType:"picture-card",
+      //设置antd自带方法，默认图片显示
+      defaultFileList:[
+        {
+          uid:-1,
+          name:"xxx.png",
+          state:"done",
+          url:"./src/images/pikaqiu.jpg",
+          thumbUrl:"./src/images/pikaqiu.jpg"
+        }
+      ],
+      //预览时设置预览图片地址和显示模态框
+      onPreview:(file) => {
+        this.setState({
+          previewImage:file.url,
+          previewVisible:true
+        })
+      }
     }
-
-    const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
 
     return (
       <div>
@@ -76,16 +70,12 @@ export default class PCUserCenter extends React.Component {
               <TabPane tab="头像设置" key="3">
 
                 {/*上传控件的调用。{...props}表示获取父组件传递来的值*/}
-                <Upload action="//jsonplaceholder.typicode.com/posts/"
-                  listType="picture-card"
-                  fileList={fileList}
-                  onPreview={this.handlePreview}
-                  onChange={this.handleChange}
-                >
-                  {fileList.length >= 3 ? null : uploadButton}
+                <Upload {...props}>
+                  <Icon type="plus"/>
+                  <div className="ant-upload-text">上传照片</div>
                 </Upload>
-                <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                  <img alt="预览图" src={previewImage} />
+                <Modal visible={this.state.previewVisible} footer={null} onCancel={this.handleCancel}>
+                  <img src={this.state.previewImage} alt="预览图"/>
                 </Modal>
 
               </TabPane>
