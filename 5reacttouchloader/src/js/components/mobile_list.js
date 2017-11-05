@@ -63,7 +63,7 @@ export default class MobileList extends React.Component{
             count:count > 0 && count < 50
           });
           //页面加载初始化调用一次结束
-          // resove();
+          resove();
         })
     },2e3)
   };
