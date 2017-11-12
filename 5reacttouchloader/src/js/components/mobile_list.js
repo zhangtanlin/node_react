@@ -39,7 +39,7 @@ export default class MobileList extends React.Component{
     resolve参数是为了关闭等待的那个滚动圈圈
     2e3表示2乘以(10的三次方)等于2000
   */
-  loadMore(resove){
+  loadMore(resolve){
     setTimeout(() => {
       var count = this.state.count;
       this.setState({
@@ -53,18 +53,20 @@ export default class MobileList extends React.Component{
       }
       fetch("http://newsapi.gugujiankong.com/Handler.ashx?action=getnews&type="+this.props.type+"&count="+this.state.count,myFetchOptions)
         .then(response => response.json())
-        .then(json => {
+        .then(json =>{
           //获取请求的数据并赋给news
           this.setState({
-            news:json
+            news: json
           })
-          //判定
-          this.state({
-            count:count > 0 && count < 50
-          });
-          //页面加载初始化调用一次结束
-          resove();
-        })
+        });
+
+      //判定【注意：一定要写在fetch外面】
+      this.setState({
+        hasMore:count > 0 && count < 50
+      });
+      //页面加载初始化调用一次结束
+      resolve();
+
     },2e3)
   };
 
