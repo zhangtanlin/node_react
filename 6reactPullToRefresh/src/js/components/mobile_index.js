@@ -7,6 +7,9 @@ import MobileList from "./mobile_list";
 import { Tabs} from 'antd';
 const TabPane = Tabs.TabPane;
 
+//加载国内选项卡时，调用，下拉刷新【加载娱乐列表】模块
+import MobileListPullRefresh from "./mobile_list_pull_to_refresh";
+
 export default class MobileIndex extends React.Component{
   render(){
 
@@ -26,7 +29,7 @@ export default class MobileIndex extends React.Component{
             <MobileList type={"shehui"} count={"20"}></MobileList>
           </TabPane>
           <TabPane tab="国内" key="3">
-            <MobileList type={"guonei"} count={"20"}></MobileList>
+            <MobileListPullRefresh type={"guonei"} count={"20"}></MobileListPullRefresh>
           </TabPane>
           <TabPane tab="国际" key="4">
             <MobileList type={"guoji"} count={"20"}></MobileList>
