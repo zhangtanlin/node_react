@@ -1,3 +1,5 @@
+/*用 wenpack 编译*/
+
 const wevpack = require('webpack');
 const path = require('path');
 //处理html
