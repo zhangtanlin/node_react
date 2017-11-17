@@ -2,24 +2,30 @@
 
 const wevpack = require('webpack');
 const path = require('path');
+
+//处理css的打包
+const extractCSS = require('extract-text-webpack-plugin');
+
 //处理html
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 //处理css
 
 module.exports = {
-  entry:{
-    all:
-      [
-        './src/css/public.css',
-        './src/css/li.css',
-        './src/css/p.css',
-        './src/css/table.css'
-      ],
-    all:
+  entry: {
+    js:
       [
         './src/js/alert_number.js',
-        './src/js/alert_string.js'
+        './src/js/alert_string.js',
+        './src/css/public.css'
       ]
+  },
+  module:{
+    rules:[
+      {
+        test:/\.css$/,
+        use:extractCSS.extract(['style-loader','css-loader'])
+      }
+    ]
   },
   output:{
     path: path.resolve(__dirname,'./dist'),

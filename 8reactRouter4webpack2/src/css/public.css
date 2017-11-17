@@ -100,3 +100,6 @@ table {
 .clear {
   *zoom: 1;
 }
+span{
+  color:darkred;
+}
