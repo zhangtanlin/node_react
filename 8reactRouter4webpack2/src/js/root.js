@@ -1,7 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-ReactDOM.render(
-  <h1>Hello, world!</h1>,
-  document.getElementById('container')
-);
+// export default class Root extends React.Component{
+//   render(){
+//     return(
+//       <div>Hello,world!</div>
+//     );
+//   };
+// };
+
+ReactDOM.render(<div>Hello,world!</div>,document.getElementById('container'));

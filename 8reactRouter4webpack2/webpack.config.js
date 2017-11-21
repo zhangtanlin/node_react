@@ -9,25 +9,21 @@ module.exports = {
     rules:[
       {
         test:/\.js?$/,
-        exclude:/(node_modules)/,
-        use:  {
-          loader: 'babel-loader',
-          options: {
-            presets: ["react","es2015"],
-            plugins:["react-html-attrs"]//转换react的className
-          }
-        }
+        exclude:/node_modules/,
+        loader: 'babel-loader'
       },
       {
         test:/\.css?$/,
-        use:['style-loader!css-loader']
+        use:[
+          {loader:'style-loader'},
+          {loader:'css-loader'}
+        ]
       }
     ]
   },
   output:{
-    path: path.resolve(__dirname,'./dist'),
-    filename: './src/bundle.js'
-
+    path: __dirname + '/src',
+    filename: 'bundle.js'
   },
   devServer:{
     port:8080
